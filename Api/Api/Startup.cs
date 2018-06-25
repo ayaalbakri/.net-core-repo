@@ -31,6 +31,7 @@ namespace Api
             services.AddIdentity<AppIdentityUser, IdentityRole<Guid>>()
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
                     .AddDefaultTokenProviders();
+           services.AddScoped<IAccountRepository,AccountRepository>();
             services.AddMvc();
         }
 
