@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.DomainModels;
 using Api.Models;
+using Api.Services.Automapper;
+using Api.Services.Injector;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +33,13 @@ namespace Api
             services.AddIdentity<AppIdentityUser, IdentityRole<Guid>>()
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
                     .AddDefaultTokenProviders();
-           services.AddScoped<IAccountRepository,AccountRepository>();
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfile());
+            });
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+            services.RegisterServices();
             services.AddMvc();
         }
 
