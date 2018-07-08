@@ -17,15 +17,15 @@
           </div>
           <div class="input-field col s6" >
             <i class="material-icons prefix">account_circle</i>
-            <input id="icon_Password" class="validate" type="password" #Psaaword="ngModel" name="Psaaword"  [(ngModel)]="registration.Psaaword"  [pattern]="pwdPattern" required>
+            <input id="icon_Password" class="validate" type="password" #Password="ngModel" name="Password"  [(ngModel)]="registration.Password"  [pattern]="pwdPattern" required>
             <label for="icon_Password">password//</label>
-            <span *ngIf="!Psaaword.valid && (Psaaword.dirty || Psaaword.touched)">password uncorect</span>            
+            <span *ngIf="!Password.valid && (Password.dirty || Password.touched)">password uncorect</span>            
           </div>
           <div class="input-field col s6" >
             <i class="material-icons prefix">account_circle</i>
             <input id="icon_conPassword" class="validate" type="password" #confirmPassword="ngModel" name="confirmPassword"  [(ngModel)]="registration.confirmPassword" required>
             <label for="icon_conPassword">Confirm Password</label>
-            <span *ngIf="registration.confirmPassword != registration.Psaaword  && (confirmPassword.dirty || confirmPassword.touched)">Password mismatch</span>            
+            <span *ngIf="registration.confirmPassword != registration.Password  && (confirmPassword.dirty || confirmPassword.touched)">Password mismatch</span>            
           </div>
           <div class="input-field col s6">
             <i class="material-icons prefix">account_circle</i>
@@ -45,7 +45,7 @@
             <input id="icon_email" type="text" class="validate"#email="ngModel" name="email"  [(ngModel)]="registration.Email" [pattern]="emailPattern" required>
             <label for="icon_email">Email</label>
             <span *ngIf="!email.valid  && (email.dirty || email.touched)">Invalid Email</span>
-          <button class="btn waves-effect waves-light" type="submit" name="action"  [disabled]="!signupForm.form.valid">Submit
+          <button class="btn waves-effect waves-light" type="submit" name="action" [disabled]="!signupForm.form.valid">Submit
               <i class="material-icons right">send</i>
             </button>
           </div>
@@ -54,7 +54,6 @@
     </div>
   </div>
 </div>
-
 </div>
 
 

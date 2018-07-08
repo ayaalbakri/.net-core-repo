@@ -6,6 +6,7 @@ using Api.DomainModels;
 using Api.Models;
 using Api.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,10 @@ namespace Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/Account")]
+    [EnableCors("AllowAllHeaders")]
     public class AccountController : Controller
     {
+
         private readonly IMapper _mapper;
         private readonly IAccountRepository _accountRepository;
 
@@ -27,6 +30,9 @@ namespace Api.Controllers
         [HttpGet]
         public IActionResult Users()
         {
+            //Register x = new Register();
+            //Type type = Type.GetType("Api.Models.Register");
+            //object instance = "Register";
             return Ok();
         }
         [HttpPost]

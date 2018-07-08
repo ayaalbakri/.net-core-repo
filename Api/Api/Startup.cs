@@ -29,7 +29,15 @@ namespace Api
         {
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                         builder => builder
+                         .AllowAnyOrigin()
+                         .AllowAnyMethod()
+                         .AllowAnyHeader()
+                    );
+            });
             services.AddIdentity<AppIdentityUser, IdentityRole<Guid>>()
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
                     .AddDefaultTokenProviders();
@@ -39,6 +47,7 @@ namespace Api
             });
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
+
             services.RegisterServices();
             services.AddMvc();
         }
@@ -55,7 +64,7 @@ namespace Api
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseCors("AllowAllHeaders");
             app.UseStaticFiles();
             app.UseIdentity();
             app.UseMvc(routes =>

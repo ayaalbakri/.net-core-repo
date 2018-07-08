@@ -1,6 +1,6 @@
 export class User {
     UserName:string;
-    Psaaword:string;
+    Password:string;
     FirstName:string;
     LastName:string;
     Email:string;
