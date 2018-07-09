@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Api.DomainModels;
 using Api.Models;
 using Api.Services.Automapper;
 using Api.Services.Injector;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api
 {
@@ -38,17 +42,34 @@ namespace Api
                          .AllowAnyHeader()
                     );
             });
-            services.AddIdentity<AppIdentityUser, IdentityRole<Guid>>()
-                    .AddEntityFrameworkStores<AppIdentityDbContext>()
-                    .AddDefaultTokenProviders();
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new AutoMapperProfile());
             });
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
+            services.AddIdentity<AppIdentityUser, IdentityRole<Guid>>()
+                    .AddEntityFrameworkStores<AppIdentityDbContext>()
+                    .AddDefaultTokenProviders();
+          
 
             services.RegisterServices();
+            // ===== Add Jwt Authentication ========
+           services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = Configuration["Jwt:Issuer"],
+            ValidAudience = Configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+          };
+        });
+           
             services.AddMvc();
         }
 
@@ -64,9 +85,11 @@ namespace Api
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+         
             app.UseCors("AllowAllHeaders");
             app.UseStaticFiles();
-            app.UseIdentity();
+            app.UseAuthentication();
+            app.UseMvc();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

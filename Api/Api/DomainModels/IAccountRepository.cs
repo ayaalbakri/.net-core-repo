@@ -10,6 +10,8 @@ namespace Api.DomainModels
     public interface IAccountRepository
     {
         Task<IdentityResult> Register(Register model);
-         
+        Task<object> Login(LogIn model);
+
+
     }
 }

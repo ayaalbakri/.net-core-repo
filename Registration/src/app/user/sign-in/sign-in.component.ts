@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SignIn } from '../shared/sign.model';
 
 @Component({
   selector: 'app-sign-in',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  logIn: { UserName: string; Password: string; };
+  logIn: SignIn;
   pwdPattern = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}";
 
   constructor() { }

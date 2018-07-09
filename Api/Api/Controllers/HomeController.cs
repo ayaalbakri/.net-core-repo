@@ -8,6 +8,7 @@ using Api.Models;
 
 namespace Api.Controllers
 {
+   
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Api.Models;
+using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api.DomainModels
 {
@@ -12,8 +17,10 @@ namespace Api.DomainModels
     {
         private UserManager<AppIdentityUser> _userManager;
         private SignInManager<AppIdentityUser> _signManager;
+    
 
-        public AccountRepository(UserManager <AppIdentityUser> userManager,SignInManager<AppIdentityUser>signInManager )
+
+        public AccountRepository(UserManager <AppIdentityUser> userManager,SignInManager<AppIdentityUser>signInManager)
         {
             _userManager = userManager;
             _signManager = signInManager;
@@ -25,5 +32,13 @@ namespace Api.DomainModels
             return result;
 
         }
+        public async Task<object> Login(LogIn model)
+        {
+            var result = await _signManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            return result;
+          
+    }
+
+        
     }
 }
