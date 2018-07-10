@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SignIn } from '../shared/sign.model';
+import { UserService } from '../shared/user.service';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-sign-in',
@@ -10,16 +13,26 @@ export class SignInComponent implements OnInit {
   logIn: SignIn;
   pwdPattern = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}";
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.logIn={
-      UserName:'',
-      Password:'',
+    this.logIn = {
+      Email: '',
+      Password: '',
     }
   }
-  onFormSubmit(logIn){
-    console.log("onFormSubmit",logIn);
+  onlogInSubmit(logIn) {
+    console.log("onFormSubmit", logIn);
+    //this.userService.userAuthentication(logIn)
+      this.userService.userAuthentication(logIn).subscribe((data:any )=>{
+
+        console.log("datatataatat",data);
+        console.log(data.result.succeeded,"data.result.succeeded")
+        if(data.result.succeeded){
+          console.log("nda,snd,masnd,amdn,");
+         this.ngOnInit();
+        }
+    }), error => console.log(error,"   errrrrrrrrrror"); 
   }
 
 }

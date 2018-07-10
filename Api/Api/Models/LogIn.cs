@@ -13,6 +13,5 @@ namespace Api.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-        public ClaimsIdentity Name { get; internal set; }
     }
 }

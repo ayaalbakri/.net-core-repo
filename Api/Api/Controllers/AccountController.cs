@@ -40,17 +40,8 @@ namespace Api.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Users()
         {
-            //var  user = User.Claims.ElementAt(0);
             var email = User.Claims.FirstOrDefault(c => c.Type == "Email").Value;
-            // var email = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email).Value;
-            //// string userEmail = user.ToString();
-
-            //  string[] arr = userEmail.Split(new string[] {"emailaddress:" }, StringSplitOptions.None);
-            //string THEEMAIL= arr[1];
-            //var currentUser = HttpContext.User;
-            //if (currentUser.HasClaim(c => c.Type == ClaimTypes.Email)) {
-            //    string Email = currentUser.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-            //userAge = DateTime.Today.Year - birthDate.Year;
+           
             return Ok(email);
            
         }
@@ -65,22 +56,29 @@ namespace Api.Controllers
            return Ok( _accountRepository.Register(userIdentity));
         }
         [HttpPost("login")]
-        public IActionResult register([FromBody]LogIn model)
+        public async Task<IActionResult> register([FromBody]LogIn model)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var claims = new[] {
+            // _accountRepository.Login(model);
+            bool result = await _accountRepository.Login(model);
+            if (result) {
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var claims = new[] {
         new Claim("Email", model.Email),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-               claims:claims,
-              expires: DateTime.Now.AddMinutes(30),
-              signingCredentials: creds);
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+                  _config["Jwt:Issuer"],
+                   claims: claims,
+                  expires: DateTime.Now.AddMinutes(30),
+                  signingCredentials: creds);
+                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            }
+            else
+            {
+                return NotFound();
+            }
+           
         }
-
-        //return BadRequest();
     }
 }

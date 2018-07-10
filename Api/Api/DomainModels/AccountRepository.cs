@@ -32,11 +32,14 @@ namespace Api.DomainModels
             return result;
 
         }
-        public async Task<object> Login(LogIn model)
+        public async Task<bool> Login(LogIn model)
         {
             var result = await _signManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-            return result;
-          
+            Console.WriteLine(result);
+            if (result.Succeeded) {
+                return true;
+            }
+            return false;
     }
 
         
