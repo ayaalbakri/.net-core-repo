@@ -41,7 +41,13 @@ namespace Api.DomainModels
             }
             return false;
     }
-
         
+        public async void  Logout()
+        {
+             await _signManager.SignOutAsync();
+            
+        }
+
+
     }
 }

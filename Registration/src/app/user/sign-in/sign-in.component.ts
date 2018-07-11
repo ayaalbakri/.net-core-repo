@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.css']
+  styleUrls: ['./sign-in.component.css'],
+  providers : [UserService]
 })
 export class SignInComponent implements OnInit {
   logIn: SignIn;
@@ -26,8 +27,9 @@ export class SignInComponent implements OnInit {
     //this.userService.userAuthentication(logIn)
       this.userService.userAuthentication(logIn).subscribe((data:any )=>{
 
-        console.log("datatataatat",data);
-        console.log(data.result.succeeded,"data.result.succeeded")
+        console.log("datatataatat",data.token);
+        //console.log(data.result.succeeded,"data.result.succeeded")
+        localStorage.setItem("token",data.token)
         if(data.result.succeeded){
           console.log("nda,snd,masnd,amdn,");
          this.ngOnInit();

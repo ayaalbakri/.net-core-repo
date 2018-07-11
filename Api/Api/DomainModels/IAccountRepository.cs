@@ -11,6 +11,7 @@ namespace Api.DomainModels
     {
         Task<IdentityResult> Register(Register model);
         Task<bool> Login(LogIn model);
+        void Logout();
 
 
     }

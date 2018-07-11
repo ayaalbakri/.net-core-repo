@@ -80,5 +80,12 @@ namespace Api.Controllers
             }
            
         }
+
+        [HttpPost("logout")]
+        public IActionResult LogOut()
+        {
+            _accountRepository.Logout();
+            return NoContent();
+        }
     }
 }
